@@ -12,6 +12,7 @@ func ErrorHandlerMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 		defer func() {
 			if r := recover(); r != nil {
 				c.Logger().Error("Recovered from panic:", r)
+
 				err = c.JSON(http.StatusInternalServerError, map[string]any{
 					"success": false,
 					"message": "Internal server error",
