@@ -3,9 +3,9 @@ package services
 import (
 	"net/http"
 
+	"github.com/Sahil2k07/Golang-Unit-Tests/errors"
 	"github.com/Sahil2k07/Golang-Unit-Tests/interfaces"
 	"github.com/Sahil2k07/Golang-Unit-Tests/models"
-	"github.com/Sahil2k07/Golang-Unit-Tests/repositories"
 	"github.com/labstack/echo"
 )
 
@@ -14,10 +14,10 @@ type userService struct {
 	repo interfaces.IUserRepository
 }
 
-func NewUserService(c echo.Context) interfaces.IUserService {
+func NewUserService(c echo.Context, repo interfaces.IUserRepository) interfaces.IUserService {
 	return &userService{
 		ctx:  c,
-		repo: repositories.NewUserRepository(),
+		repo: repo,
 	}
 }
 
@@ -35,7 +35,7 @@ func (u *userService) CreateNewUser() error {
 	}
 
 	if existingUser.Email != "" {
-		return u.ctx.String(http.StatusBadRequest, "User already exists")
+		return errors.BadRequestError("user already exists")
 	}
 
 	return u.repo.AddNewUser(dto)
@@ -50,7 +50,7 @@ func (u *userService) GetUserData() error {
 	}
 
 	if user.Email == "" {
-		return u.ctx.JSON(http.StatusNotFound, "no user found")
+		return errors.NotFoundError("user not found")
 	}
 
 	return u.ctx.JSON(http.StatusOK, user)
