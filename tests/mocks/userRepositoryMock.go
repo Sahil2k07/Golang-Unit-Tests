@@ -18,3 +18,8 @@ func (m *UserRepoMock) GetUserData(email string) (models.User, error) {
 	args := m.Called(email)
 	return args.Get(0).(models.User), args.Error(1)
 }
+
+func (m *UserRepoMock) GetUserWithPosts(email string) (models.User, error) {
+	args := m.Called(email)
+	return args.Get(0).(models.User), args.Error(1)
+}

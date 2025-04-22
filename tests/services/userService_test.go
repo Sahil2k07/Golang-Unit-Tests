@@ -56,3 +56,23 @@ func TestCreateUser_UserExists(t *testing.T) {
 	mockRepo.AssertNotCalled(t, "AddNewUser", mock.Anything)
 	mockRepo.AssertExpectations(t)
 }
+
+func TestGetUserData_UserExists(t *testing.T) {
+	mockRepo := new(mocks.UserRepoMock)
+
+	ctx := tests.SetupContext("GET", "/api/user?email=test@example.com", "")
+
+	existingUser := models.User{
+		ID:    1,
+		Name:  "Random",
+		Email: "test@example.com",
+	}
+
+	mockRepo.On("GetUserData", "test@example.com").Return(existingUser, nil)
+
+	service := services.NewUserService(ctx, mockRepo)
+	err := service.GetUserData()
+
+	assert.NoError(t, err)
+	mockRepo.AssertExpectations(t)
+}

@@ -55,3 +55,18 @@ func (u *userService) GetUserData() error {
 
 	return u.ctx.JSON(http.StatusOK, user)
 }
+
+func (u *userService) GetUserWithPosts() error {
+	email := u.ctx.QueryParam("email")
+
+	user, err := u.repo.GetUserWithPosts(email)
+	if err != nil {
+		return err
+	}
+
+	if user.Email == "" {
+		return errors.NotFoundError("user not found")
+	}
+
+	return u.ctx.JSON(http.StatusOK, user)
+}

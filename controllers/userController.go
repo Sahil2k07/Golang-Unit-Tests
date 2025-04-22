@@ -18,4 +18,10 @@ func userController(e *echo.Echo) {
 
 		return us.CreateNewUser()
 	})
+
+	e.GET("/api/user/post", func(c echo.Context) error {
+		us := services.NewUserService(c, repositories.NewUserRepository())
+
+		return us.GetUserWithPosts()
+	})
 }

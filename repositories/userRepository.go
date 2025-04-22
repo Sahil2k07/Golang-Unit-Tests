@@ -45,3 +45,18 @@ func (u *userRepository) GetUserData(email string) (models.User, error) {
 
 	return user, nil
 }
+
+func (u *userRepository) GetUserWithPosts(email string) (models.User, error) {
+	var user models.User
+
+	result := u.db.Preload("Posts").Where("email = ?", email).Find(&user)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return models.User{}, nil
+		}
+
+		return models.User{}, result.Error
+	}
+
+	return user, nil
+}
