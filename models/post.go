@@ -5,7 +5,6 @@ import "gorm.io/gorm"
 type (
 	Post struct {
 		gorm.Model
-		ID     uint   `gorm:"primaryKey" json:"id"`
 		Title  string `json:"title"`
 		Body   string `json:"body"`
 		UserID uint   `json:"userId"`
