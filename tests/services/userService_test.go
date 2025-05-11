@@ -40,7 +40,6 @@ func TestCreateUser_UserExists(t *testing.T) {
 	ctx := tests.SetupContext("POST", "/api/user", reqBody)
 
 	existingUser := models.User{
-		ID:    1,
 		Name:  "Shahil",
 		Email: "test@example.com",
 	}
@@ -63,7 +62,6 @@ func TestGetUserData_UserExists(t *testing.T) {
 	ctx := tests.SetupContext("GET", "/api/user?email=test@example.com", "")
 
 	existingUser := models.User{
-		ID:    1,
 		Name:  "Random",
 		Email: "test@example.com",
 	}

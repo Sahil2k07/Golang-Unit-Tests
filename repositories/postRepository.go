@@ -16,7 +16,12 @@ func NewPostRepository() interfaces.IPostRepository {
 }
 
 func (pr *postRepository) GetUserPosts(email string) ([]models.Post, error) {
-	var posts []models.Post
+	var user models.User
 
-	return posts, nil
+	err := pr.db.Preload("Posts").Where("email = ?", email).First(&user).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return user.Posts, nil
 }

@@ -3,6 +3,7 @@ package services
 import (
 	"net/http"
 
+	"github.com/Sahil2k07/Golang-Unit-Tests/errors"
 	"github.com/Sahil2k07/Golang-Unit-Tests/interfaces"
 	"github.com/labstack/echo"
 )
@@ -20,5 +21,12 @@ func NewPostService(c echo.Context, r interfaces.IPostRepository) interfaces.IPo
 }
 
 func (ps *postService) GetUserPosts() error {
-	return ps.ctx.JSON(http.StatusOK, nil)
+	email := ps.ctx.QueryParam("email")
+
+	posts, err := ps.repo.GetUserPosts(email)
+	if err != nil {
+		return errors.InternalServerError(err.Error())
+	}
+
+	return ps.ctx.JSON(http.StatusOK, posts)
 }

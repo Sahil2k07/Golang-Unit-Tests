@@ -1,21 +1,15 @@
 package controllers
 
 import (
-	"github.com/Sahil2k07/Golang-Unit-Tests/errors"
+	"github.com/Sahil2k07/Golang-Unit-Tests/repositories"
+	"github.com/Sahil2k07/Golang-Unit-Tests/services"
 	"github.com/labstack/echo"
 )
 
 func postController(e *echo.Echo) {
-	e.PUT("/api/test", func(c echo.Context) error {
-		// data := struct {
-		// 	Success bool
-		// 	Message string
-		// }{
-		// 	Success: false,
-		// 	Message: "Test message",
-		// }
-		// return c.JSON(http.StatusOK, data)
+	e.GET("/api/post/user", func(c echo.Context) error {
+		ps := services.NewPostService(c, repositories.NewPostRepository())
 
-		return errors.BadRequestError("testing bad request")
+		return ps.GetUserPosts()
 	})
 }
